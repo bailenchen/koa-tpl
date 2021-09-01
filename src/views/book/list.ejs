@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+      .wrap {
+        width: 800px;
+        margin: auto;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        text-align: center;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1><%= title %></h1>
+      <p>EJS Welcome to <%= title %></p>
+
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>书名</th>
+          <th>作者</th>
+          <th>ISBN</th>
+          <th>出版社</th>
+        </tr>
+      </table>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+      $.ajax({
+        url: "/api/book/list",
+        success: function (res) {
+          const { data } = res
+
+          const table = document.querySelector('table')
+          const fg = document.createDocumentFragment()
+        
+          data.forEach(item => {
+            const tr = document.createElement('tr')
+            Object.keys(item).forEach(k=> {
+              const td = document.createElement('td')
+              td.innerHTML = item[k]
+              tr.appendChild(td)
+            })
+            fg.appendChild(tr)
+          });
+          table.appendChild(fg)
+        }
+      });
+    </script>
+  </body>
+</html>
