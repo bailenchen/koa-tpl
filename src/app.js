@@ -11,10 +11,14 @@ const logger = require('koa-logger')
 const index = require('./routes/index')
 const bookViewRouter = require('./routes/view/book')
 const bookAPIRouter = require('./routes/api/book')
-
+const errorViewRouter = require('./routes/view/error')
 
 // error handler
-onerror(app)
+let onerrorConf = {}
+onerrorConf = {
+  redirect: '/error',
+}
+onerror(app, onerrorConf)
 
 // middlewares
 app.use(bodyparser({
@@ -41,6 +45,7 @@ app.use(async (ctx, next) => {
 app.use(index.routes(), index.allowedMethods())
 app.use(bookViewRouter.routes(), bookViewRouter.allowedMethods())
 app.use(bookAPIRouter.routes(), bookAPIRouter.allowedMethods())
+app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
